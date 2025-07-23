@@ -1,8 +1,10 @@
 # 22 de Julho de 2025
 
-Temas abordados
+## Temas abordados
 
 **Arquitetura VHDL**
+
+##
 
 **Declaração de sinais**
 
