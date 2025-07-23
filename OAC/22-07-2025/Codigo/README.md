@@ -10,5 +10,5 @@
 
 ## Esses dois em aula, explicação junto dos arquivos
 
-- O primeiro faz ...
-- O segundo faz ...
+- O primeiro "maioria.vhdl" 
+- O segundo "maioria_tb.vhdl" 
