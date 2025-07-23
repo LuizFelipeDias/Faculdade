@@ -8,8 +8,6 @@
 
 **Barramentos**
 
-**Declaração de sinais**
-
 **Circuitos Combinacionais**
 
 **Complexador 4x1**
