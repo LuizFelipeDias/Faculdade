@@ -4,8 +4,6 @@
 
 **Arquitetura VHDL**
 
-##
-
 **Declaração de sinais**
 
 **Barramentos**
