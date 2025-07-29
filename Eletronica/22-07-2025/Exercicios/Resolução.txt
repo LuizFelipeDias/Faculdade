@@ -1,0 +1,46 @@
+RESOLUÇÃO COMPLETA DOS EXERCÍCIOS - ELETRÔNICA
+
+Exercício 32:
+Q = I * t
+Q = 0,05 A * 3 s = 0,15 C
+
+Exercício 33:
+P = 100 W, t = 2 h
+Energia (Wh) = 100 * 2 = 200 Wh
+Energia (kJ) = 200 Wh * 3,6 = 720 kJ
+
+Exercício 34:
+V = 1,5 V, R = 20 Ω
+I = V / R = 1,5 / 20 = 0,075 A = 75 mA
+
+Exercício 35:
+I = 1 mA = 0,001 A, R = 10 kΩ = 10000 Ω
+V = R * I = 10000 * 0,001 = 10 V
+
+Exercício 36:
+Resistores em paralelo:
+1/R_eq = 1/30 + 1/20
+1/R_eq = (2 + 3)/60 = 5/60
+R_eq = 60/5 = 12 ohms
+
+Exercício 37:
+Análise visual do circuito mostra:
+- 5 ramos (componentes entre dois nós)
+- 3 nós (pontos de junção)
+Associação: indicar série/paralelo conforme componentes conectados.
+
+Exercício 38:
+Utilizando LKT e análise de malhas:
+v1 = 8 V, v2 = -12 V
+
+Exercício 39:
+Lei de Ohm invertida:
+I = V / R = -12 V / 3 Ω = -4 A
+
+Exercício 40:
+Capacitores em série:
+1/C_eq = 1/30 + 1/60
+1/C_eq = (2 + 1)/60 = 3/60 => C_eq = 20 μF
+
+Exercício 41:
+Indutores em série: L_eq = L1 + L2 = 10 H + 8 H = 18 H
