@@ -1,0 +1,104 @@
+1. Para qual instrução abaixo a unidade de controle não deve setar o multiplexador 15 em 0?
+a) add
+b) and
+c) sub
+d) lw
+
+Resposta: d) lw
+
+Explicação:
+
+a) add, b) and, c) sub:
+Essas são instruções do tipo R, onde o registrador destino está no campo rd. O multiplexador 15 deve ser 0 para selecionar o campo rd como destino do dado escrito no banco de registradores. Portanto, para essas instruções, o multiplexador 15 deve ser 0.
+
+Na instrução lw (load word), o registrador de destino é especificado pelo campo rt da instrução, enquanto para instruções tipo R (add, and, sub) o destino é rd. O multiplexador 15 controla essa seleção; então, para lw, ele não pode ser setado em 0, pois isso faria com que o valor fosse escrito no registrador errado.
+
+2. Para qual das seguintes instruções a unidade de controle deve setar o multiplexador 16 em 1?
+a) beq
+b) lw
+c) sw
+d) addi
+
+Resposta: c) sw
+
+Explicação:
+
+a) beq:
+Instrução de desvio, não envolve escrever dado na memória, portanto multiplexador 16 não deve ser 1.
+
+b) lw:
+Carrega dado da memória para o registrador, não escreve na memória, então multiplexador 16 deve estar em 0 para passar o dado da memória para registrador.
+
+d) addi:
+Instrução aritmética imediata que escreve em um registrador, não escreve na memória, multiplexador 16 deve estar em 0.
+
+c) sw:
+Instrui a escrita do dado do registrador na memória. Por isso multiplexador 16 deve ser 1 para escolher dados corretos para a memória.
+
+Na instrução sw (store word), o dado será salvo na memória. O multiplexador 16 precisa estar em 1 para selecionar o dado correto (que vem do registrador rt) para ser escrito na memória.
+
+3. Para qual das seguintes instruções a linha 14 do caminho de dados é efetivamente empregada?
+a) add
+b) beq
+c) lw
+d) j
+
+Resposta: a) add
+
+
+
+Explicação:
+
+a) add:
+Linha 14 conecta a saída da ALU ao banco de registradores para escrita do resultado, usado em operações tipo R como add.
+
+b) beq:
+Instrução de desvio que não usa a linha 14 para escrita em registradores.
+
+c) lw:
+O dado vem da memória, não da ALU; a linha 14 não é usada para essa operação.
+
+d) j:
+Instrução de salto que altera PC, não escreve resultado em registradores via linha 14.
+
+A linha 14 conecta a saída da ALU com o dado de resultado que vai para o "Write Data" do banco de registradores. Em instruções do tipo R, como add, o resultado da ALU é escrito no registrador destino, usando a linha 14.
+
+4. Complete o quadro (Figura 2) com os sinais de controle para as instruções.
+Esta questão envolve preencher a tabela de controle de sinais (RegDst, RegWrite, etc.) para cada instrução. As respostas estão preenchidas manualmente, conforme orientado.
+
+5. O caminho de dados não implementa a instrução BNE (branch not equal). Implemente a parte do circuito, usando portas lógicas, para que o caminho de dados suporte essa instrução. Use o novo sinal BranchNE.
+
+Explicação:
+Nesta questão, pede-se criar uma lógica para a instrução BNE, que faz o desvio quando os valores comparados pela ALU são diferentes. O controle deve gerar BranchNE = (Branch AND NOT Zero) para ativar o desvio quando o resultado da ALU for diferente de zero (valores diferentes).
+
+6. Complete o código VHDL (controle para processador de ciclo único) substituindo o 0 por uma declaração de sinal ou operador VHDL, de forma que o código esteja correto. Considere que o sinal OP é uma entrada do circuito. Considere também a ilustração 3 para o controle dos multiplexadores MemtoReg.
+
+architecture Behavioral of controle is
+    R_type, LWD, SWD, BEQ, ADDI, BNE, J: std_logic;
+begin
+    -- Op é o opcode da instrução
+    R_type <= '1' when OP = "000000" else '0';
+    LWD    <= '1' when OP = "100011" else '0';
+    SWD    <= '1' when OP = "101011" else '0';
+    BEQ    <= '1' when OP = "000100" else '0';
+    ADDI   <= '1' when OP = "001000" else '0';
+    BNE    <= '1' when OP = "000101" else '0';
+    J      <= '1' when OP = "000010" else '0';
+
+    -- Atribuição dos valores para as saídas
+    Branch    <= BEQ;
+    MemToReg  <= LWD;
+    ALUSrc    <= LWD or SWD or ADDI;
+    RegDst    <= R_type;
+    MemRead   <= LWD;
+    MemWrite  <= SWD;
+    RegWrite  <= R_type or LWD or ADDI;
+
+    ALUOp(1)  <= R_type;
+    ALUOp(0)  <= BEQ or BNE;
+    BranchNE  <= BNE;
+end Behavioral;
+
+
+Explicação:
+Na questão, pede-se alterar o código VHDL para que cada linha condicional reflita o sinal correto para cada instrução, configurando os sinais de controle de acordo com a operação (tipo R, lw, sw, beq, etc.), conforme ilustrado na Figura 3 e anotado no exercício.
