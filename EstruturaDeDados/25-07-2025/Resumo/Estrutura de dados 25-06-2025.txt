@@ -1,0 +1,73 @@
+ALGORITMOS DE BUSCA - REVISÃO
+
+1. Busca Linear
+-------------------
+• Percorre o array do início ao fim.
+• Compara cada elemento com a chave de busca.
+• Utiliza-se para dados não ordenados.
+
+Complexidade:
+- Melhor caso: O(1)
+- Pior caso: O(n)
+- Caso médio: O(n/2)
+
+Código em Rust:
+pub fn busca_linear(vetor: &[i32], alvo: i32) -> Option<usize> {
+    for (i, &valor) in vetor.iter().enumerate() {
+        if valor == alvo {
+            return Some(i);
+        }
+    }
+    None
+}
+
+
+2. Busca Sequencial Ordenada
+-------------------
+• Parte de um array ordenado.
+• Se o valor buscado for menor que um valor do array, a busca termina.
+• Mais eficiente que a busca linear em média.
+
+Desvantagens:
+- Requer ordenação prévia, que tem custo.
+
+Código em Rust:
+pub fn busca_ordenada(vetor: &[i32], alvo: i32) -> Option<usize> {
+    for (i, &valor) in vetor.iter().enumerate() {
+        if valor == alvo {
+            return Some(i);
+        } else if valor > alvo {
+            break;
+        }
+    }
+    None
+}
+
+
+3. Busca Binária
+-------------------
+• Exige vetor ordenado.
+• Divide o array em metades sucessivas até encontrar o valor ou concluir que ele não existe.
+
+Complexidade:
+- Melhor caso: O(1)
+- Pior caso: O(log n)
+- Caso médio: O(log n)
+
+Código em Rust:
+pub fn busca_binaria(vetor: &[i32], alvo: i32) -> Option<usize> {
+    let mut inicio = 0;
+    let mut fim = vetor.len();
+
+    while inicio < fim {
+        let meio = inicio + (fim - inicio) / 2;
+        if vetor[meio] == alvo {
+            return Some(meio);
+        } else if vetor[meio] < alvo {
+            inicio = meio + 1;
+        } else {
+            fim = meio;
+        }
+    }
+    None
+}

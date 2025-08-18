@@ -1,0 +1,117 @@
+ELETRÔNICA I
+
+TEMA DA AULA: REVISÃO DE CONCEITOS FUNDAMENTAIS
+PROF. Me. MATHEUS TAUFFER DE PAULA
+Ponta Grossa - PR, 2024
+
+SUMÁRIO
+- Corrente, tensão, resistência, potência e energia
+- Lei da conservação da energia, Lei de Ohm
+- Resistores
+- Circuito aberto e curto-circuito
+- Efeito Joule
+- Elementos armazenadores de energia
+- Fontes de tensão e fontes de corrente
+- Ramo, nó, laço, 1ª Lei de Kirchhoff e 2ª Lei de Kirchhoff
+
+CORRENTE ELÉTRICA
+- “Corrente elétrica consiste no fluxo de cargas elétricas por unidade de tempo”
+- Em condutores metálicos se deve a elétrons carregados negativamente
+- A corrente pode ser contínua (CC) ou alternada (CA)
+
+CORRENTE CONTÍNUA x CORRENTE ALTERNADA
+- Exemplos
+- Historicamente, esse paradigma data do século XIX
+- Filme: “Batalha das Correntes”
+- CC defendida por Thomas Edison
+- CA defendido por George Westinghouse (venceu a disputa)
+
+TENSÃO E RESISTÊNCIA ELÉTRICA
+- “Tensão elétrica está relacionada ao trabalho para deslocar as cargas elétricas”
+- “Resistência elétrica de um elemento representa sua capacidade de resistir ao fluxo de corrente elétrica”
+
+POTÊNCIA
+- “Potência é a velocidade com que se fornece ou se absorve energia, medida em watts (W)”
+- Fórmula: P = V * I
+
+ENERGIA
+- “Energia é a capacidade de realizar trabalho e é medida em joules (J)”
+- Obs: a energia também pode ser medida em watts-hora (Wh)
+- Fórmula: E = P * t
+
+LEI DA CONSERVAÇÃO DA ENERGIA
+- “A soma algébrica da potência em um circuito, a qualquer instante de tempo, deve ser zero”
+- Fórmula: Σp = 0
+
+LEI DE OHM
+- “A tensão sobre um resistor é diretamente proporcional à corrente que por ele circula”
+- OBS: é válida para resistores lineares
+- Fórmula: V = I * R
+- Analogia:
+    Altura – Tensão
+    Vazão – Corrente
+    Restrição – Resistência
+
+RESISTORES
+- Resistividade: é uma propriedade dos materiais
+- Resistores fixos e variáveis
+- São usados em praticamente todos os circuitos
+- Associação:
+    - Série: Req = R1 + R2 + ... + Rn
+    - Paralelo: 1/Req = 1/R1 + 1/R2 + ... + 1/Rn
+- Código de cores de resistores
+
+CIRCUITO ABERTO E CURTO-CIRCUITO
+- Circuito aberto: corrente nula
+- Curto-circuito: resistência nula
+
+EFEITO JOULE
+- Relaciona a corrente (ou tensão) que circula em um resistor com a potência dissipada nesse componente
+- Fórmulas:
+    P = I^2 * R
+    P = V^2 / R
+- A potência dissipada é sempre positiva
+
+CAPACITORES
+- Associação:
+    - Série: 1/Ceq = 1/C1 + 1/C2 + ...
+    - Paralelo: Ceq = C1 + C2 + ...
+
+INDUTORES
+- Associação:
+    - Série: Leq = L1 + L2 + ...
+    - Paralelo: 1/Leq = 1/L1 + 1/L2 + ...
+
+FONTE DE TENSÃO IDEAL
+- Fornece uma tensão especificada independente dos outros elementos
+- Pode fornecer qualquer corrente para manter a tensão
+- Fontes de tensão só podem ser associadas em série
+
+FONTE DE CORRENTE IDEAL
+- Fornece uma corrente especificada independente dos outros elementos
+- Pode aplicar qualquer tensão para manter a corrente
+- Fontes de corrente só podem ser associadas em paralelo
+
+RAMOS, NÓS E LAÇOS
+- Um laço inicia-se em um nó, passa por uma série de nós e retorna ao nó de partida sem repetir nós
+
+1ª LEI DE KIRCHHOFF (LKC)
+- “A soma algébrica das correntes que entram em um nó é nula”
+- Fórmula: Σi_entrada = Σi_saida
+
+2ª LEI DE KIRCHHOFF (LKT)
+- “A soma algébrica de todas as tensões em torno de um caminho fechado é nula”
+- Fórmula: ΣV = 0 (em um laço)
+
+EXERCÍCIOS
+- Quanta energia uma lâmpada de 100 W consome em duas horas? (720 kJ e 200 Wh)
+- Uma pilha de 1,5 V conectada a um resistor de 20Ω → Corrente? (75 mA)
+- Corrente de 1 mA em resistor de 10kΩ → Tensão? (10 V)
+- Identifique ramos, nós, elementos em série/paralelo
+- Determine tensões v1 e v2 em circuitos
+- Capacitância e indutância equivalentes
+
+SÍNTESE
+- Revisão de grandezas: corrente, tensão, resistência, potência, energia
+- Leis: conservação da energia, Ohm e Kirchhoff
+- Elementos de circuito: passivos (resistores, capacitores, indutores) e ativos (fontes)

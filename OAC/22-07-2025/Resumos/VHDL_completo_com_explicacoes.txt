@@ -1,0 +1,107 @@
+VHDL (Very High Speed Integrated Circuit Hardware Description Language)
+
+É uma linguagem de Descrição de Hardware que tem como objetivo controlar e também simular os sinais dentro de um circuito.
+
+No VHDL pode-se definir uma arquitetura através de:
+
+1. Fluxo de Dados
+Descreve módulos pela definição de atribuição de sinais:
+
+Código:
+s0 <= (not x) and (not y);
+s1 <= x and y;
+
+Explicação:
+- A primeira linha atribui à variável s0 o resultado da operação lógica 'not x AND not y'.
+  Isso significa que s0 será '1' apenas se x e y forem ambos '0'.
+- A segunda linha atribui à variável s1 o resultado de 'x AND y', ou seja, s1 será '1' apenas se x e y forem ambos '1'.
+- Esse estilo é conhecido por representar expressões booleanas diretamente, sem a necessidade de controle sequencial.
+
+2. Listagem Estrutural
+Combina elementos mais simples para formar elementos mais complexos:
+
+Código:
+begin
+
+eq_bit0: entity work.comparator1bit
+    port map (x => a(0), y => b(0), eq => s0);
+
+eq_bit1: entity work.comparator1bit
+    port map (x => a(1), y => b(1), eq => s1);
+
+eq <= s0 and s1;
+
+Explicação:
+- Esse código instancia dois componentes chamados comparator1bit.
+- eq_bit0 compara os bits a(0) e b(0), e envia o resultado para s0.
+- eq_bit1 compara os bits a(1) e b(1), e envia o resultado para s1.
+- Por fim, eq recebe o valor lógico de 's0 AND s1', ou seja, eq será '1' apenas se os dois comparadores retornarem '1'.
+- Essa forma mostra como componentes individuais podem ser ligados para formar circuitos maiores.
+
+3. Descrições de Comportamento
+Fornece as entradas e saídas usando construções similares à linguagem de programação:
+
+Código:
+process(a,b)
+begin 
+  if ((a(0) = b(0)) and (a(1) = b(1))) then
+    eq <= '1';
+  else 
+    eq <= '0';
+  end if;
+end process;
+
+Explicação:
+- Dentro de um bloco process, usamos estruturas condicionais como 'if' para verificar condições entre sinais.
+- Aqui, comparamos os bits 0 e 1 dos vetores a e b.
+- Se ambos os bits forem iguais, eq recebe '1'; caso contrário, eq recebe '0'.
+- Esse estilo de codificação é semelhante a linguagens de alto nível e facilita a descrição de comportamentos complexos.
+
+4. Barramento
+Padrão de comunicação utilizado em computadores para interconexão de dispositivos variados.
+É representado por um sinal do tipo 'std_logic_vector', que é uma coleção de sinais 'std_logic'.
+
+Código:
+ENTITY votador IS
+    PORT(DADOS: IN std_logic_vector(2 DOWNTO 0);
+         Y:    OUT std_logic);
+END votador;
+
+Explicação:
+- Esse exemplo define uma entidade chamada 'votador'.
+- Ela possui uma porta de entrada DADOS, que é um vetor de 3 bits (do 2 ao 0).
+- A saída Y é um único bit.
+- Esse tipo de estrutura é comum para trabalhar com entradas múltiplas de bits.
+
+5. Complexador 4x1
+É um circuito que permite selecionar mais de uma entrada para uma mesma saída, conforme um sinal de seleção.
+
+Tabela Verdade:
+SEL[1]  SEL[0]   Y
+  0       0     IN0
+  0       1     IN1
+  1       0     IN2
+  1       1     IN3
+
+Explicação da tabela:
+- Dependendo do valor binário de SEL[1:0], a saída Y assume o valor de uma das quatro entradas (IN0 a IN3).
+- Esse tipo de tabela representa o funcionamento de um multiplexador.
+
+Código:
+ARCHITECTURE arch OF multiplexer4x1 IS
+BEGIN
+
+WITH SEL SELECT
+    Y <= IN0 WHEN "00",
+         IN1 WHEN "01",
+         IN2 WHEN "10",
+         IN3 WHEN "11",
+         '0'  WHEN OTHERS;
+
+END arch;
+
+Explicação:
+- A arquitetura 'arch' define um multiplexador 4x1.
+- A construção 'WITH SEL SELECT' escolhe uma das entradas com base no valor do sinal SEL.
+- Se SEL = "00", Y recebe IN0; se "01", recebe IN1; e assim por diante.
+- 'WHEN OTHERS' define o valor padrão (aqui, '0') para o caso de SEL ter um valor inesperado.

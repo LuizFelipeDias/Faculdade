@@ -1,0 +1,3 @@
+# Exercicios
+
+Qustões e respostas 

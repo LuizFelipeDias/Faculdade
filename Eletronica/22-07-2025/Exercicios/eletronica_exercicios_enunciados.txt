@@ -1,0 +1,29 @@
+EXERCÍCIOS – ELETRÔNICA 1
+
+1. (Resp: 0,15 C)
+
+2. Quanta energia uma lâmpada de 100 W consome em duas horas? Forneça o resultado em kJ e em Wh.
+   (Resp: 720 kJ e 200 Wh)
+
+3. Considere que uma pilha de 1,5 V é conectada a um resistor de 20Ω. Qual é a corrente elétrica?
+   (Resp: 75 mA)
+
+4. Se há uma corrente de 1 mA circulando através de um resistor de 10kΩ, qual é a tensão sobre o resistor?
+   (Resp: 10 V)
+
+5. (Resp: C) 12 ohms
+
+6. Identifique quantos ramos e nós existem no circuito abaixo.
+   Existem elementos em série? E em paralelo? Se sim, indique as associações no circuito.
+   (Resp: 5 e 3, respectivamente)
+
+7. Determine as tensões v1 e v2 no circuito abaixo.
+   (Resp: 8 V e -12 V)
+
+8. (Resp: a) -4 A
+
+9. Determine a capacitância equivalente do circuito abaixo.
+   (Resp: 20 μF)
+
+10. Determine a indutância equivalente do circuito abaixo.
+    (Resp: 18 H)
