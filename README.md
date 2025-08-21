@@ -1,4 +1,4 @@
-# 📚 Estudos da Faculdade — 2º Semestre
+# 📚 Estudos da Faculdade — 2º Ano
 
 Repositório dedicado ao acompanhamento dos meus estudos, exercícios, trabalhos e anotações das disciplinas do segundo semestre da graduação em Engenharia da Computação.
 
