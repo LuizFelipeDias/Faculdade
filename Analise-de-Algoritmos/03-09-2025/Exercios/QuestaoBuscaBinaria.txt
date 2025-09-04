@@ -1,0 +1,65 @@
+QUESTÃO 5 — COMPLEXIDADE DA BUSCA BINÁRIA
+==============================================
+
+Enunciado
+---------
+A solução do problema Triângulos foi melhorada substituindo a busca sequencial por **busca binária**. 
+Em um vetor **ordenado** com n elementos, a função que descreve o tempo de execução de uma busca binária pertence a qual classe?
+
+Opções
+------
+a) O(n^2)
+b) O(n)
+c) O(√n)
+d) O(log n)
+e) O(n log n)
+
+Resposta
+--------
+**d) O(log n)**
+
+Explicação (intuição)
+---------------------
+Na busca binária, a cada comparação o espaço de busca é **partido ao meio**. 
+Portanto, o número de passos necessários para reduzir um conjunto de tamanho n até 1 é proporcional ao número de vezes que se pode dividir n por 2:
+    n → n/2 → n/4 → … → 1  ⇒  número de passos ≈ log2(n).
+Assim, o **pior caso** (e também o caso médio) é **Θ(log n)**. O **melhor caso** é O(1), quando o elemento é encontrado na primeira comparação.
+
+Demonstração por recorrência (esboço)
+-------------------------------------
+Seja T(n) o tempo de busca:
+- Comparamos o elemento central (**custo constante**, c).
+- Se não for igual, recursivamente buscamos em **metade** do vetor.
+Logo, T(n) = T(⌊n/2⌋) + c, com T(1) = d.
+Pela expansão da recorrência:
+    T(n) = c·k + d, onde  n/(2^k) = 1  ⇒  k = log2(n).
+Portanto, T(n) ∈ Θ(log n).
+
+Pré-condições importantes
+-------------------------
+1) O vetor **precisa estar ordenado**. Sem ordenação, busca binária **não** se aplica corretamente.
+2) É necessário acesso indexado (aleatório) para cortar exata e rapidamente ao meio:
+   - Em **vetor/array**, acesso é O(1) ⇒ T(n) = Θ(log n).
+   - Em lista ligada, o acesso ao meio é O(n), o que inviabiliza o ganho; na prática, não se usa busca binária em lista ligada sem apoio adicional.
+
+Exemplo rápido (n = 16)
+-----------------------
+Passos (no pior caso):
+1) Compara o 8º elemento (meio) → resta metade (8).
+2) Compara o 4º elemento da metade → resta 4.
+3) Compara o 2º da nova metade → resta 2.
+4) Compara o 1º/2º final → encontra ou conclui ausência.
+Total de comparações ≈ log2(16) = 4 (no pior caso).
+
+Impacto no problema Triângulos
+------------------------------
+Se, para cada ponto no primeiro terço da circunferência, eram feitas **duas buscas**:
+- Com **busca sequencial**, cada execução custava O(n), portanto o agregado era ≈ (n/3)·2·O(n) = **Θ(n²)**.
+- Com **busca binária**, cada execução custa O(log n), portanto o agregado passa a ≈ (n/3)·2·O(log n) = **Θ(n log n)**.
+Ou seja, a troca de busca sequencial por binária reduz a ordem de crescimento do módulo de busca de **quadrática** para **quase-linear**.
+
+Observações finais
+------------------
+- Classe de complexidade da busca binária em vetor ordenado: **Θ(log n)** no pior caso.
+- Complexidade espacial: **O(1)** na versão iterativa; **O(log n)** se implementada recursivamente (pela pilha de chamadas).
+

@@ -1,0 +1,164 @@
+PROVAS POR INDUÇÃO E POLINÔMIOS — ARQUIVO ORGANIZADO
+====================================================
+
+PARTE I — PROVA POR INDUÇÃO: SOMA DOS NÚMEROS NATURAIS
+------------------------------------------------------
+
+Proposição P(n)
+---------------
+Para todo n ∈ ℕ (naturais, iniciando em 0), seja
+S_n = 0 + 1 + 2 + ... + n.
+Afirmamos que:  S_n = n(n + 1) / 2.
+
+Objetivo
+--------
+Provar por indução matemática sobre n que
+0 + 1 + 2 + ... + n = n(n + 1) / 2.
+
+Base da indução
+---------------
+n = 0:
+S_0 = 0.
+Fórmula: 0(0 + 1)/2 = 0/2 = 0.
+Logo, P(0) é verdadeira.
+
+Hipótese de indução (H.I.)
+--------------------------
+Suponha que, para algum k ≥ 0, valha P(k):
+S_k = 0 + 1 + 2 + ... + k = k(k + 1)/2.
+
+Passo de indução — cálculo detalhado
+------------------------------------
+Queremos provar P(k + 1):
+S_{k+1} = 0 + 1 + 2 + ... + k + (k + 1) = (k + 1)(k + 2)/2.
+
+Partimos da definição de S_{k+1}:
+1) S_{k+1} = S_k + (k + 1)
+
+Substituímos a H.I. (S_k = k(k + 1)/2):
+2) S_{k+1} = [k(k + 1)/2] + (k + 1)
+
+Colocamos tudo sobre o mesmo denominador (2):
+3) S_{k+1} = [k(k + 1)/2] + [2(k + 1)/2]
+
+Somamos os numeradores:
+4) S_{k+1} = {k(k + 1) + 2(k + 1)} / 2
+
+Fatoramos (k + 1) em evidência no numerador:
+5) S_{k+1} = {(k + 1)[k + 2]} / 2
+
+Concluímos a forma fechada desejada:
+6) S_{k+1} = (k + 1)(k + 2) / 2
+
+Logo, se P(k) é verdadeira, então P(k + 1) também é. Juntamente com a base,
+temos por indução que a fórmula vale para todo n ∈ ℕ.
+
+De onde vem o termo (k + 2)?
+----------------------------
+O termo (k + 2) aparece naturalmente quando somamos os numeradores e depois
+fatoramos o polinômio resultante.
+
+Observe a linha (4):
+    k(k + 1) + 2(k + 1)
+
+Colocando (k + 1) em evidência:
+    k(k + 1) + 2(k + 1) = (k + 1)[k + 2]
+
+Por que isso é válido? Veja pelos coeficientes:
+- k(k + 1) = k^2 + k
+- 2(k + 1) = 2k + 2
+Somando: k^2 + k + 2k + 2 = k^2 + 3k + 2
+
+Agora fatorando o quadrático k^2 + 3k + 2:
+    k^2 + 3k + 2 = (k + 1)(k + 2)
+
+Isso confirma que
+    k(k + 1) + 2(k + 1) = (k + 1)(k + 2).
+
+
+PARTE II — POLINÔMIOS: AVALIAÇÃO, INDUÇÃO E MÉTODO DE HORNER
+------------------------------------------------------------
+
+Definições
+----------
+Considere um polinômio de grau n:
+    P_n(x) = a_n x^n + a_{n-1} x^{n-1} + ... + a_1 x + a_0,
+com coeficientes a_i em um corpo (por exemplo, ℝ).
+
+Exemplo (avaliação direta)
+--------------------------
+Dado:  P_3(x) = x^3 − 2x^2 − x + 5.
+Pergunta: P_3(1) = ?
+
+Cálculo:
+- 1^3 = 1
+- −2·1^2 = −2
+- −1 = −1
+- +5
+Soma: 1 − 2 − 1 + 5 = 3.
+Logo, P_3(1) = 3.
+
+Proposição (computabilidade por indução em n)
+---------------------------------------------
+Se sabemos computar P_{n−1}(x), então conseguimos computar P_n(x).
+
+Prova por indução (esboço formal):
+- Base (n = 0): P_0(x) = a_0 é computável (uma única leitura do coeficiente).
+- Passo: suponha que P_{k−1}(x) seja computável para um k ≥ 1.
+  Então
+      P_k(x) = a_k x^k + P_{k−1}(x).
+  Podemos obter x^k multiplicando x sucessivas vezes (k multiplicações) ou,
+  de forma mais eficiente, evitar esse termo explícito usando a forma aninhada
+  (Horner) abaixo. Como P_{k−1}(x) é computável pela hipótese, e somas/
+  multiplicações finitas também o são, conclui-se que P_k(x) é computável.
+
+Observação importante (eficiência):
+-----------------------------------
+A avaliação “ingênua” que calcula separadamente x^i e depois multiplica por a_i
+pode custar Θ(n^2) operações se os poderes forem recomputados do zero para cada i.
+O método de Horner reduz a avaliação para Θ(n) operações (aprox. 2 operações por
+coeficiente: 1 multiplicação + 1 adição).
+
+Método de Horner (forma aninhada)
+---------------------------------
+Reescrevemos o polinômio (ordenando do termo de maior para menor grau) como:
+    P_n(x) = (...((a_n x + a_{n-1}) x + a_{n-2}) x + ... + a_1) x + a_0
+
+Algoritmo (versão iterativa):
+1) b ← a_n
+2) Para i = n − 1, n − 2, ..., 0 faça: b ← b·x + a_i
+3) Ao final, b = P_n(x).
+
+Prova de correção (esboço indutivo reverso):
+Defina B_k como o valor obtido após processar os coeficientes de a_n até a_k,
+isto é:
+    B_n = a_n,  e  B_k = B_{k+1}·x + a_k  (para k = n−1, ..., 0).
+Afirmação:  B_k = ∑_{i=k}^{n} a_i x^{i−k}.  (Prova por indução em n−k.)
+Logo, B_0 = ∑_{i=0}^{n} a_i x^{i} = P_n(x).
+
+Exemplo com Horner (mesmo P_3 e x = 1)
+--------------------------------------
+Coeficientes (do maior para o menor grau): a_3 = 1, a_2 = −2, a_1 = −1, a_0 = 5.
+- B_3 = a_3 = 1
+- B_2 = B_3·x + a_2 = 1·1 + (−2) = −1
+- B_1 = B_2·x + a_1 = (−1)·1 + (−1) = −2
+- B_0 = B_1·x + a_0 = (−2)·1 + 5 = 3
+Resultado: P_3(1) = B_0 = 3.
+
+Complexidade e memória
+----------------------
+- Horner executa Θ(n) multiplicações e Θ(n) somas ⇒ **Θ(n)** no total.
+- Versão iterativa usa apenas uma variável acumuladora ⇒ **O(1)** de memória.
+- Em ponto flutuante, a forma aninhada reduz erros de arredondamento em
+  comparação à soma termo a termo de potências elevadas.
+
+Resumo da Parte II
+------------------
+1) Avaliar P_n(x) é sempre possível (prova por indução em n).
+2) O método de Horner fornece um procedimento **correto** e **ótimo** (Θ(n))
+   para avaliação de polinômios em uma variável.
+3) Exemplo: P_3(1) = 3 tanto por avaliação direta quanto por Horner.
+
+
+FIM DO ARQUIVO
+==============

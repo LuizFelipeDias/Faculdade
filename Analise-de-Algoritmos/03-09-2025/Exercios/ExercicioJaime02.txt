@@ -1,0 +1,258 @@
+LISTA — ANÁLISE DE ALGORITMOS (RESPOSTAS + EXPLICAÇÕES)
+
+Obs.: uso log na base 2. Em classificações, interpreto 'nn−−√' como n*sqrt(n).
+
+======================================================================
+QUESTÃO 1 — Dois laços separados
+Código:
+    test = 0;
+    for (i=0; i<n; ++i)
+        test = test + 1;
+    for (j=0; j<n; ++j)
+        test = test - 1;
+
+1) Cada laço executa: n vezes.
+2) Tempo: linear (Θ(n)).
+3) Espaço: constante (Θ(1)).
+
+======================================================================
+QUESTÃO 2 — Dois laços aninhados
+Código:
+    for (i=0; i<n; ++i)
+        for (j=0; j<n; ++j)
+            test = test + i*j;
+
+1) i varia de 0 a n−1.
+2) j varia de 0 a n−1.
+3) Atribuição executa: n² vezes.
+4) Tempo: quadrática (Θ(n²)).
+5) Espaço: constante (Θ(1)).
+
+======================================================================
+QUESTÃO 3 — Função f(n) com divisões por 2 (n = 2^k)
+Código:
+    int f(int n){
+      int i, k = 0;
+      i = n;
+      while (i != 1) {
+         k = k + 1;
+         i = i / 2;
+      }
+      return k;
+    }
+
+1) f(4) = 2.   (4→2→1)
+2) f(8) = 3.   (8→4→2→1)
+3) Invariante: i = n / 2^k  (na alternativa: i = n/2k, entendendo 2k como 2^k).
+4) Tempo: da ordem de log n (Θ(log n)).
+
+======================================================================
+QUESTÃO 4 — Espaço do fatorial recursivo
+def fatorial_recursivo(n):
+    if n == 0: return 1
+    else: return n * fatorial_recursivo(n - 1)
+
+Resposta: linear (Θ(n)).
+Justificativa: empilha ~n chamadas (profundidade da recursão).
+
+======================================================================
+QUESTÃO 5 — Espaço vs. árvore de recursão
+"""LISTA — ANÁLISE DE ALGORITMOS (GABARITO DETALHADO)
+Autor: ChatGPT
+Observações gerais:
+• log = log2 (salvo indicação em contrário).
+• Em expressões como “nn−−√”, interpretamos como n * sqrt(n) = n^{3/2}.
+
+======================================================================
+Q1) DOIS LAÇOS SEPARADOS
+Código:
+    test = 0;
+    for (i = 0; i < n; ++i)
+        test = test + 1;
+    for (j = 0; j < n; ++j)
+        test = test - 1;
+
+(1) Quantas vezes cada laço executa?
+Resposta: n vezes cada um.
+Justificativa: os índices i e j percorrem 0,1,...,n−1 (n valores).
+
+(2) Complexidade de tempo do código completo?
+Resposta: Θ(n).
+Demonstração: o primeiro laço faz n incrementos; o segundo, n decrementos ⇒ total ~ 2n operações básicas.
+
+(3) Complexidade de espaço?
+Resposta: Θ(1).
+Justificativa: apenas variáveis escalares (i, j, test), sem vetores/estruturas adicionais.
+
+======================================================================
+Q2) DOIS LAÇOS ANINHADOS
+Código:
+    for (i = 0; i < n; ++i)
+        for (j = 0; j < n; ++j)
+            test = test + i * j;
+
+(1) Valores de i ao longo da execução?
+Resposta: de 0 a n−1.
+
+(2) Valores de j ao longo da execução?
+Resposta: de 0 a n−1.
+
+(3) Quantas vezes a atribuição executa?
+Resposta: n^2 vezes.
+Justificativa: n escolhas de i × n escolhas de j.
+
+(4) Complexidade de tempo?
+Resposta: quadrática (Θ(n^2)).
+
+(5) Complexidade de espaço?
+Resposta: constante (Θ(1)).
+
+======================================================================
+Q3) FUNÇÃO f(n) — n É POTÊNCIA DE 2
+Código:
+    int f(int n){
+      int i, k = 0;
+      i = n;
+      while (i != 1) {
+         k = k + 1;
+         i = i / 2;   // divisão inteira
+      }
+      return k;
+    }
+
+(1) f(4) = ?  → Resposta: 2.  (4 → 2 → 1)
+(2) f(8) = ?  → Resposta: 3.  (8 → 4 → 2 → 1)
+
+(3) Invariante ao fim de cada iteração (relação entre n, i, k):
+Resposta: i = n / 2^k. (na alternativa escrita “i = n/2k”, lê-se 2^k).
+
+(4) Complexidade de tempo em função de n:
+Resposta: Θ(log n).
+Demonstração: a cada passo i é dividido por 2; se n = 2^k, o laço executa k vezes (até i = 1).
+
+======================================================================
+Q4) ESPAÇO DO FATORIAL RECURSIVO
+Código (Python):
+    def fatorial_recursivo(n):
+        if n == 0:
+            return 1
+        else:
+            return n * fatorial_recursivo(n - 1)
+
+Resposta: (b) linear.
+Demonstração: profundidade de chamadas é n (cadeia n, n−1, ..., 1, 0). Cada chamada empilha um novo registro.
+Logo, espaço de pilha no pior ponto é Θ(n).
+
+======================================================================
+Q5) ESPAÇO × ÁRVORE DE RECURSÃO
+Hipótese: cada chamada usa Θ(g(n)) de espaço local; não há alocação dinâmica extra.
+Pergunta: qual a relação entre complexidade de espaço e a árvore de execução?
+Resposta: (e) Θ(g(n)) multiplicado pela altura (profundidade) da árvore.
+Justificativa: no pior instante, a memória ocupada é o nº de chamadas simultâneas (profundidade) × espaço por chamada.
+
+======================================================================
+Q6) CONCATENAÇÃO COM strncat — n STRINGS DE TAMANHO m (MESMO BUFFER)
+Função:
+    void concatena(char *buffer, char *palavra, int m) { strncat(buffer, palavra, m); }
+Total de caracteres a copiar: s = n·m.
+
+(1) Complexidade de tempo ao chamar n vezes?
+Resposta: Θ(m·n^2).
+Raciocínio: em C, strncat precisa varrer o buffer até '\\0' para achar o fim. O buffer cresce em passos de m:
+  custos ~ 0, m, 2m, ..., (n−1)m ⇒ soma m(0+1+...+(n−1)) = m·(n−1)n/2 = Θ(m·n^2).
+
+(2) Dá para melhorar?
+Resposta: Sim. Mantendo um ponteiro (ou índice) para o “fim” do buffer e usando memcpy, evitamos revarrer.
+Custo: apenas a cópia efetiva, Θ(n·m) = Θ(s).
+
+Alternativa correta no enunciado: (d) “Θ(mn^2) e existe solução de tempo linear em s (Θ(mn))”.
+
+======================================================================
+BLOCO — CLASSIFICAÇÕES ASSINTÓTICAS
+(Considere “a)” como a função n√n = n^{3/2})
+
+1) Pertencem a O(n^2)?
+   a) n√n    b) n(n+1)(n−1)/3    c) 2000n^2+n    d) n log n    e) n(n+1)/8    f) n^2+10
+   Resposta: a, c, d, e, f.
+   Motivos:
+   • a) n^{3/2} ≤ n^2 para n≥1 ⇒ O(n^2).  • b) ≈ (1/3)n^3 ⇒ não.
+   • c) 2000n^2+n ≤ 2001 n^2 ⇒ O(n^2).    • d) n log n ≤ n^2 para n≥2 ⇒ O(n^2).
+   • e) (n^2+n)/8 = O(n^2).               • f) n^2+10 = O(n^2).
+
+2) Pertencem a ω(n^2)?
+   Resposta: apenas b) (≈ n^3).
+
+3) Pertencem a Θ(n^2)?
+   Resposta: b) não; c) não; d) não; e) sim; f) sim; e também c) 2000n^2+n é sim Θ(n^2).
+   Correto: **c, e, f**.
+   (Cuidado para não marcar d): n log n não é Θ(n^2).)
+
+4) Pertencem a o(n^2)?  (usar conjunto com d=n log n, e=2n+10, f=n√n)
+   Resposta: d, e, f.  Pois (n log n)/n^2 → 0; (2n+10)/n^2 → 0; (n^{3/2})/n^2 = 1/√n → 0.
+
+5) Pertencem a Ω(n^2)?  (usar conjunto com c=2000n^2+n, d=n(n+1)(n−1)/3, f=n(n+1)/8)
+   Resposta: c, d, f.  (c e f são Θ(n^2); d é Θ(n^3) ⇒ também é Ω(n^2)).
+
+======================================================================
+Q — SELECTION SORT: NÚMERO DE COMPARAÇÕES
+Algoritmo “Seleção”: T(n) = número de testes a[i] < a[iMin].
+Análise: para j=0..n−2, comparamos a[j+1..n−1] com a[iMin] ⇒ (n−j−1) comparações por j.
+Soma: T(n) = ∑_{j=0}^{n−2} (n−j−1) = ∑_{k=1}^{n−1} k = (n−1)n/2.
+Opção equivalente no enunciado: ∑_{i=1}^{n−1} i.  (Alternativa “b”.)
+
+======================================================================
+Q — VETOR ORDENADO (NÃO-DECRESCENTE)
+Problema: testar se o vetor está em ordem não-decrescente.
+Resposta correta: (c) “São necessárias Ω(n) comparações e existe algoritmo Θ(n)”. 
+Algoritmo: varrer e checar a[i] > a[i+1]. Pior caso (já ordenado) faz n−1 comparações ⇒ Θ(n).
+E é necessário olhar todos os pares adjacentes ⇒ Ω(n).
+
+======================================================================
+Q — BUSCA SEQUENCIAL (CASO PODE NÃO ENCONTRAR)
+Prob. de não estar: p̄. Prob. condicional de estar na posição i (dado que está): p_i.
+Número médio de comparações:
+    f(n) = p̄·n + (1−p̄) · ∑_{i=1}^{n} i · p_i.
+Interpretação: custo n quando não está; custo i quando está na posição i.
+
+======================================================================
+Q — DOIS GERADORES DE PONTOS (P1 × P2)
+Algoritmo 1: laços → P1(n) = n^2 log n.
+Algoritmo 2: deslocamentos → P2(n) = 2^n.
+Relações verdadeiras: 
+    P1 ∈ o(P2), logo P1 ∈ O(P2) e P2 ∈ ω(P1).
+Falsas: P1 ∈ Θ(P2) e P2 ∈ O(P1).
+
+======================================================================
+Q — ORÇAMENTO DE OPERAÇÕES (4h e 24h) — 10^9 ops/s
+Orçamento: B = 10^9 × (horas × 3600).
+
+• 4 horas: B = 10^9 × 4 × 3600 = 1.44×10^13
+  – Alg. quadrático (n^2 ≤ B): n_max = ⌊√B⌋ ≈ 3,794,733.
+  – Alg. exponencial  (2^n ≤ B): n_max = ⌊log2 B⌋ ≈ 43.
+
+• 24 horas: B = 10^9 × 24 × 3600 = 8.64×10^13
+  – Alg. quadrático: n_max ≈ 9,295,160.
+  – Alg. exponencial: n_max ≈ 46.
+
+======================================================================
+INSTÂNCIAS (como na imagem da atividade)
+• Coloração de Vértices de um Grafo:
+  ((1,2,3,4), {{1,2}, {1,3}, {1,4}, {3,4}})
+• Busca de Cadeia de Caracteres em um Texto:
+  ('ano', 'as marés são produzidas pela interferência gravitacional da lua sobre o oceano')
+• Ordenação de um vetor de inteiros:
+  [10,1,5,2,3,4]
+• Par de pontos mais próximo no plano:
+  ((1,2), (4,5), (10,-5), (-1,0))
+
+======================================================================
+FIM — Caso queira, converto este TXT em PDF ou separo em “enunciado” e “gabarito”.
+"""
+INSTÂNCIAS (como na imagem)
+- Grafo (coloração): ((1,2,3,4), {{1,2}, {1,3}, {1,4}, {3,4}})
+- Padrão em texto: ('ano', 'as marés são produzidas pela interferência gravitacional da lua sobre o oceano')
+- Vetor para ordenação: [10,1,5,2,3,4]
+- Pontos (par mais próximo): ((1,2), (4,5), (10,-5), (-1,0))
+
+======================================================================
+FIM

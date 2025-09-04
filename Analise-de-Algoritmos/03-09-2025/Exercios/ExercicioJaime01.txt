@@ -1,0 +1,196 @@
+PROBLEMA TRIÂNGULOS — ANOTAÇÕES E RESPOSTAS
+=================================================
+
+1) QUESTÃO 1 — COMPLEXIDADE DAS DUAS BUSCAS SEQUENCIAIS
+-------------------------------------------------------
+Enunciado:
+No primeiro algoritmo apresentado em sala para resolver o problema Triângulos, para cada ponto no primeiro terço da circunferência, duas buscas sequenciais no vetor são executadas. O tempo de execução de pior caso de uma única execução dessas duas buscas sequenciais (isto é, duas chamadas da função busca()) pode ser descrito por uma função com a mesma ordem de crescimento de qual das funções abaixo?
+
+Opções:
+a) f(n) = n
+b) f(n) = √n
+c) f(n) = 2^n
+d) f(n) = n^2
+e) f(n) = log n
+
+Resposta: a) f(n) = n
+
+Explicação (Busca Linear):
+No pior caso, cada busca sequencial percorre todo o vetor até encontrar o elemento (ou chegar ao fim). Mesmo com duas buscas sequenciais por execução, a ordem de crescimento permanece O(n), porque constantes multiplicativas não alteram a ordem assintótica.
+
+
+2) QUESTÃO 2 — ENUMERAÇÃO DE TRIPLAS
+------------------------------------
+Enunciado:
+Considere o problema Triângulos apresentado em sala (apresentação em PDF). Uma solução consiste em enumerar todas as triplas de pontos e verificar se cada tripla forma um triângulo equilátero. Um algoritmo que implemente essa ideia terá tempo de execução com a mesma ordem de crescimento de qual função? (Dica: “quantas triplas de pontos são formadas por n pontos?”)
+
+Opções:
+a) f(n) = n^3
+b) f(n) = n
+c) f(n) = 3n
+d) f(n) = n^2
+e) f(n) = 3^n
+
+Resposta: a) f(n) = n^3
+
+Explicação (Combinação de 3 entre n):
+O número de triplas distintas é a combinação C(n, 3) = n·(n − 1)·(n − 2) / 3!.
+Assintoticamente, C(n, 3) ∈ Θ(n^3).
+
+
+3) PROBLEMA DOS TRIÂNGULOS — RESOLUÇÃO (DADOS DO EXERCÍCIO)
+-----------------------------------------------------------
+Dados:
+- N = 8 pontos na circunferência
+- Arcos entre pontos consecutivos (no sentido horário): 4, 2, 4, 2, 2, 6, 2, 2
+
+3.1) Arcos acumulados (a partir do ponto 0)
+-------------------------------------------
+Ponto | Distância acumulada
+------|---------------------
+0     | 0
+1     | 4
+2     | 6   (4 + 2)
+3     | 10  (6 + 4)
+4     | 12  (10 + 2)
+5     | 14  (12 + 2)
+6     | 20  (14 + 6)
+7     | 22  (20 + 2)
+
+Total da circunferência (retorno ao 0): 22 + 2 = 24
+
+3.2) Critério para triângulo equilátero
+---------------------------------------
+Para três pontos A, B e C formarem um triângulo equilátero sobre a circunferência, as distâncias ao longo da circunferência entre cada par consecutivo devem ser iguais. Como o perímetro total é 24, cada lado (arco) deve ter comprimento 24/3 = 8, considerando as distâncias sobre a circunferência (módulo 24).
+
+Em termos das distâncias acumuladas d(i):
+- |d(j) − d(i)| ≡ 8 (mod 24)
+- |d(k) − d(j)| ≡ 8 (mod 24)
+- |d(i) − d(k)| ≡ 8 (mod 24)
+
+3.3) Observações sobre a verificação
+------------------------------------
+Devido à irregularidade dos arcos, as triplas que satisfazem exatamente os comprimentos de 8 podem ser raras. A verificação prática envolve checar, para cada ponto i, se existem pontos j e k tais que as diferenças circulares entre (i, j) e (j, k) e (k, i) sejam iguais a 8 (considerando o menor arco módulo 24).
+
+3.4) Triplas sugeridas
+----------------------
+Com base nas verificações indicadas no texto original, as seguintes triplas são sugeridas como formando triângulos equiláteros (após considerar o sentido de percurso adequado na circunferência):
+- (0, 3, 6)
+- (1, 4, 7)
+
+Notas:
+- Em cada caso, deve-se verificar as distâncias circulares (no sentido menor) entre os vértices, assegurando que sejam iguais a 8.
+- Como os arcos são irregulares, a conferência manual exige atenção ao sentido (horário/anti-horário) e ao uso do módulo 24 para medir os menores arcos.
+
+4) PROBLEMA DOS TRIÂNGULOS — RESOLUÇÃO (DADOS DO EXERCÍCIO)
+-----------------------------------------------------------
+
+Dados:
+- N = 9 pontos na circunferência
+- Arcos entre pontos consecutivos (no sentido horário): 2, 2, 1, 2, 2, 1, 2, 2, 1
+
+Ponto | Distância acumulada
+------|---------------------
+0     | 0
+1     | 2
+2     | 4  (2 + 2)
+3     | 5  (4 + 1)
+4     | 7  (5 + 2)
+5     | 9  (7 + 2)
+6     | 10 (9 + 1)
+7     | 12 (10 + 2)
+8     | 14 (12 + 2)
+9     | 15 (14 + 1)
+
+4.2) Critério para triângulo equilátero
+---------------------------------------
+Para três pontos A, B e C formarem um triângulo equilátero sobre a circunferência, as distâncias ao longo da circunferência entre cada par consecutivo devem ser iguais. Como o perímetro total é 15, cada lado (arco) deve ter comprimento 15/3 = 5, considerando as distâncias sobre a circunferência (módulo 15).
+
+
+Total da circunferência (retorno ao 0): 15
+
+
+Em termos das distâncias acumuladas d(i):
+- |d(j) − d(i)| ≡ 5 (mod 15)
+- |d(k) − d(j)| ≡ 5 (mod 15)
+- |d(i) − d(k)| ≡ 5 (mod 15)
+
+
+4.3) Observações sobre a verificação
+------------------------------------
+Devido à irregularidade dos arcos, as triplas que satisfazem exatamente os comprimentos de 5 podem ser raras. A verificação prática envolve checar, para cada ponto i, se existem pontos j e k tais que as diferenças circulares entre (i, j) e (j, k) e (k, i) sejam iguais a 5 (considerando o menor arco módulo 15).
+
+4.4) Triplas sugeridas
+----------------------
+Com base nas verificações indicadas no texto original, as seguintes triplas são sugeridas como formando triângulos equiláteros (após considerar o sentido de percurso adequado na circunferência):
+- (0, 3, 6)
+- (1, 4, 7)
+- (2, 5, 8)
+
+QUESTÃO 5 — COMPLEXIDADE DA BUSCA BINÁRIA
+--------------------------------------
+
+Enunciado
+---------
+A solução do problema Triângulos foi melhorada substituindo a busca sequencial por **busca binária**. 
+Em um vetor **ordenado** com n elementos, a função que descreve o tempo de execução de uma busca binária pertence a qual classe?
+
+Opções
+------
+a) O(n^2)
+b) O(n)
+c) O(√n)
+d) O(log n)
+e) O(n log n)
+
+Resposta
+--------
+**d) O(log n)**
+
+Explicação (intuição)
+---------------------
+Na busca binária, a cada comparação o espaço de busca é **partido ao meio**. 
+Portanto, o número de passos necessários para reduzir um conjunto de tamanho n até 1 é proporcional ao número de vezes que se pode dividir n por 2:
+    n → n/2 → n/4 → … → 1  ⇒  número de passos ≈ log2(n).
+Assim, o **pior caso** (e também o caso médio) é **Θ(log n)**. O **melhor caso** é O(1), quando o elemento é encontrado na primeira comparação.
+
+Demonstração por recorrência (esboço)
+-------------------------------------
+Seja T(n) o tempo de busca:
+- Comparamos o elemento central (**custo constante**, c).
+- Se não for igual, recursivamente buscamos em **metade** do vetor.
+Logo, T(n) = T(⌊n/2⌋) + c, com T(1) = d.
+Pela expansão da recorrência:
+    T(n) = c·k + d, onde  n/(2^k) = 1  ⇒  k = log2(n).
+Portanto, T(n) ∈ Θ(log n).
+
+Pré-condições importantes
+-------------------------
+1) O vetor **precisa estar ordenado**. Sem ordenação, busca binária **não** se aplica corretamente.
+2) É necessário acesso indexado (aleatório) para cortar exata e rapidamente ao meio:
+   - Em **vetor/array**, acesso é O(1) ⇒ T(n) = Θ(log n).
+   - Em lista ligada, o acesso ao meio é O(n), o que inviabiliza o ganho; na prática, não se usa busca binária em lista ligada sem apoio adicional.
+
+Exemplo rápido (n = 16)
+-----------------------
+Passos (no pior caso):
+1) Compara o 8º elemento (meio) → resta metade (8).
+2) Compara o 4º elemento da metade → resta 4.
+3) Compara o 2º da nova metade → resta 2.
+4) Compara o 1º/2º final → encontra ou conclui ausência.
+Total de comparações ≈ log2(16) = 4 (no pior caso).
+
+Impacto no problema Triângulos
+------------------------------
+Se, para cada ponto no primeiro terço da circunferência, eram feitas **duas buscas**:
+- Com **busca sequencial**, cada execução custava O(n), portanto o agregado era ≈ (n/3)·2·O(n) = **Θ(n²)**.
+- Com **busca binária**, cada execução custa O(log n), portanto o agregado passa a ≈ (n/3)·2·O(log n) = **Θ(n log n)**.
+Ou seja, a troca de busca sequencial por binária reduz a ordem de crescimento do módulo de busca de **quadrática** para **quase-linear**.
+
+Observações finais
+------------------
+- Classe de complexidade da busca binária em vetor ordenado: **Θ(log n)** no pior caso.
+- Complexidade espacial: **O(1)** na versão iterativa; **O(log n)** se implementada recursivamente (pela pilha de chamadas).
+
+
+=================================================

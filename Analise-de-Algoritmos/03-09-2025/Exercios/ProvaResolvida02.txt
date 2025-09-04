@@ -1,0 +1,212 @@
+PROVA — ANÁLISE DE ALGORITMOS (Transcrição + Resolução comentada)
+
+──────────────────────────────────────────────────────────────────────────────
+1) Considere o seguinte trecho de código em C e responda:
+   a) Qual a complexidade de tempo?
+   b) Qual a complexidade de espaço?
+
+int f (int n) {
+    int i, j, a = 0;
+    for (i = 1; i <= n; ++i)
+        for (j = 1; j <= n; ++j)
+            a = a + i + j;
+    return a;
+}
+
+► RESPOSTA
+Tempo: Θ(n²).
+Espaço: Θ(1).
+
+► EXPLICAÇÃO
+São dois laços aninhados de 1..n; os dois laços fazem nxn interações; o corpo realiza trabalho O(1) para cada par (i, j),
+totalizando n×n iterações ⇒ Θ(n²). As variáveis i, j, a ocupam espaço constante ⇒ Θ(1).
+
+
+──────────────────────────────────────────────────────────────────────────────
+2) (Indução — verificar se uma sequência é (não‑decrescente) crescente)
+Definição: Uma sequência S_n = [s[0], s[1], ..., s[n−1]] é (não‑decrescente) crescente
+se s[i] ≤ s[i+1] para todo i, 0 ≤ i < n−1.
+
+Deseja‑se provar por indução a proposição P(n): “sabemos testar se uma sequência de n
+números é crescente, para todo n ≥ 1”. A estrutura da prova aponta o algoritmo recursivo
+natural que, para n > 1, testa s[n−2] ≤ s[n−1] e chama recursivamente sobre os n−1 primeiros.
+
+Pede‑se: escreva o algoritmo recursivo (pseudocódigo) que decide se S é crescente,
+preenchendo as lacunas.
+
+Crescentes(S, n)
+    se n == 1 então devolva ________
+    se _____________________________ então devolva F
+    senão devolva ___________________
+
+► RESPOSTA (pseudocódigo completo)
+Crescentes(S, n)
+    se n == 1 então devolva V
+    se S[n−2] > S[n−1] então devolva F
+    senão devolva Crescentes(S, n−1)
+
+► EXPLICAÇÃO
+Base: n==1 é sempre crescente (V). Passo: se a última dupla viola a ordem (S[n−2] > S[n−1]),
+a sequência não é crescente (F); caso contrário, basta verificar recursivamente os n−1
+primeiros elementos. Complexidade de tempo Θ(n); profundidade de pilha Θ(n).
+
+
+──────────────────────────────────────────────────────────────────────────────
+3) Torre de Hanói — Para resolver com o menor número de movimentos, qual é um dos
+subproblemas menores da abordagem recursiva?
+
+a) Mover n/2 discos da haste inicial para a haste de destino.
+b) Mover n/2 discos da haste inicial para a haste auxiliar.
+c) Mover n−1 discos da haste inicial para a haste de destino.
+d) Mover n−1 discos da haste inicial para a haste auxiliar.
+e) Mover n−2 discos da haste inicial para a haste de destino.
+
+► RESPOSTA: d) Mover n−1 discos da haste inicial para a haste auxiliar.
+
+► EXPLICAÇÃO
+A estratégia ótima: mover n−1 discos da origem para a auxiliar; mover o maior disco para a
+destino; mover os n−1 discos da auxiliar para a destino.
+
+
+──────────────────────────────────────────────────────────────────────────────
+4) Modelo RAM — Qual operação NÃO é uma operação básica do modelo RAM?
+
+a) Comparação de duas strings.
+b) Atribuição de um valor a uma variável.
+c) Escrita em uma célula de memória.
+d) Soma de dois números inteiros.
+e) Leitura de uma célula de memória.
+
+► RESPOSTA: a) Comparação de duas strings.
+
+► EXPLICAÇÃO
+No RAM, operações básicas são de custo constante sobre palavras fixas (ler/escrever,
+atribuir, somar, etc.). Comparar strings em geral depende do tamanho das strings (não é O(1)).
+
+
+──────────────────────────────────────────────────────────────────────────────
+5) Variação do MergeSort
+Em vez de dividir o vetor em 2 partes, divide‑o em 4 partes de tamanho ≈ n/4, ordena cada
+parte recursivamente e depois combina as 4 partes já ordenadas em tempo linear.
+Proponha a recorrência de pior caso e resolva‑a em notação assintótica.
+
+► RESPOSTA
+Recorrência: T(n) = 4·T(n/4) + Θ(n), com T(1) = Θ(1).
+Solução: T(n) = Θ(n log n).
+
+► EXPLICAÇÃO
+Pelo Teorema Mestre: a=4, b=4 ⇒ n^{log_b a} = n. Como f(n)=Θ(n), é o Caso 2 ⇒ Θ(n log n).
+
+
+──────────────────────────────────────────────────────────────────────────────
+6) Fatorial — Considere os algoritmos abaixo.
+(1) Versão recursiva
+int fat_rec(int n){
+    if (n == 0) return 1;
+    else return n * fat_rec(n - 1);
+}
+
+(2) Versão não recursiva (iterativa)
+int fat(int n){
+    int f = 1;
+    for (int i = n; i >= 1; i--)
+        f = f * i;
+    return f;
+}
+
+a) A complexidade de tempo e de espaço da versão recursiva são:
+   ► Tempo: Θ(n)    |   Espaço: Θ(n)
+
+b) A complexidade de tempo e de espaço da versão não recursiva são:
+   ► Tempo: Θ(n)    |   Espaço: Θ(1)
+
+► EXPLICAÇÃO
+Ambas executam n multiplicações ⇒ Θ(n) no tempo. A recursiva usa pilha de chamadas de
+profundidade n ⇒ Θ(n) de espaço adicional; a iterativa usa espaço constante.
+
+
+──────────────────────────────────────────────────────────────────────────────
+7) Karatsuba — Para multiplicar 2015 × 4030, quais são as 3 multiplicações de 2 dígitos
+usadas pelo algoritmo de Karatsuba?
+
+a) 20×15, 40×30 e 20×30
+b) 20×40, 15×30 e 35×70
+c) 20×60, 15×45 e 40×30
+d) 20×15, 40×39 e 60×55
+e) 20×30, 15×40 e 60×65
+
+► RESPOSTA: b) 20×40, 15×30 e (20+15)×(40+30)=35×70.
+
+► EXPLICAÇÃO
+Se A=20·B+15 e C=40·B+30 (com B=100), Karatsuba usa ac, bd e (a+b)(c+d):
+ac=20×40; bd=15×30; (a+b)(c+d)=35×70.
+
+
+──────────────────────────────────────────────────────────────────────────────
+8) (V/F) Julgue os itens sobre divisão‑e‑conquista, Karatsuba, árvore de recorrência etc.
+
+1. A multiplicação de Karatsuba executa em tempo Θ(n^{log₂3}).  (V)
+2. Em T(n)=a·T(n/b)+f(n), o parâmetro ‘a’ é o número de subproblemas recursivos. (V)
+3. Análises assintóticas são menos precisas do que contar exatamente as operações. (V)
+4. A busca binária tem complexidade de tempo linear no tamanho do vetor. (F)
+5. Para T(n)=2·T(n/2)+n, a altura da árvore de recursão é Θ(log n). (V)
+
+► EXPLICAÇÃO
+(1) Clássico de Karatsuba. (2) ‘a’ é a quantidade de chamadas recursivas.
+(3) Assíntota abstrai constantes/termos menores. (4) Busca binária é Θ(log n).
+(5) Em divisão por 2 a cada nível, a altura é ~log₂n.
+
+
+──────────────────────────────────────────────────────────────────────────────
+9) Em notação assintótica, resolva a recorrência:
+   T(n) = 2·T(n/2) + 1, com T(1)=Θ(1).
+
+► RESPOSTA: T(n) = Θ(n).
+
+► EXPLICAÇÃO
+Teorema Mestre: a=2, b=2 ⇒ n^{log_b a}=n. f(n)=Θ(1)=O(n^{1−ε}) ⇒ Caso 1 ⇒ Θ(n).
+
+
+──────────────────────────────────────────────────────────────────────────────
+10) Sobre o uso de notação assintótica na análise de algoritmos, marque a correta:
+
+a) A notação assintótica é útil para comparar o desempenho relativo à medida que n cresce.
+b) Se dois algoritmos têm o mesmo pior caso, o desempenho é idêntico em todas as entradas.
+c) Um algoritmo O(n log n) é sempre mais rápido do que qualquer algoritmo O(n).
+d) A notação assintótica fornece tempos exatos de execução.
+e) (Outra alternativa incorreta.)
+
+► RESPOSTA: a)
+
+► EXPLICAÇÃO
+(b) e (c) ignoram constantes/coeficientes e casos concretos; (d) é falso: a assíntota não dá
+tempo exato.
+
+
+──────────────────────────────────────────────────────────────────────────────
+11) Considere a recorrência: T(1)=0 e T(n)=2·T(n−1)+2. Calcule T(2), T(3) e T(4).
+
+► RESPOSTA
+T(2)=2·T(1)+2=2
+T(3)=2·T(2)+2=6
+T(4)=2·T(3)+2=14
+
+► EXPLICAÇÃO
+Aplicação direta da definição recursiva.
+
+
+──────────────────────────────────────────────────────────────────────────────
+12) (V/F) Notações assintóticas
+
+1. O(1) ou Θ(1) significa tempo constante, independente de n.           (V)
+2. Θ(·) pode descrever o desempenho “apertado” e Ω(·) dá limite inferior. (V)
+3. 1000n² + 50n + 20 = O(n²).                                           (V)
+4. 10n + 100 = Θ(n).                                                    (V)
+5. √n = O(log n).                                                       (F)
+
+► EXPLICAÇÃO
+(1) Definição. (2) Θ é limitante apertado; Ω é inferior. (3) e (4) seguem por dominação do
+termo de maior ordem. (5) √n cresce mais rápido do que log n, logo não é O(log n).
+
+
+FIM.
