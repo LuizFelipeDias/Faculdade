@@ -58,7 +58,7 @@ Justificativa: empilha ~n chamadas (profundidade da recursão).
 ======================================================================
 QUESTÃO 5 — Espaço vs. árvore de recursão
 """LISTA — ANÁLISE DE ALGORITMOS (GABARITO DETALHADO)
-Autor: ChatGPT
+
 Observações gerais:
 • log = log2 (salvo indicação em contrário).
 • Em expressões como “nn−−√”, interpretamos como n * sqrt(n) = n^{3/2}.
