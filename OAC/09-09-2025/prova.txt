@@ -1,0 +1,146 @@
+PROVA DE ORGANIZAÇÃO E ARQUITETURA DE COMPUTADORES — GABARITO DETALHADO
+===========================================================================
+
+Este arquivo reúne a transcrição (resumo) das questões visíveis nas imagens enviadas,
+as respostas corretas e as justificativas técnicas. Onde a figura é essencial, descrevo
+o papel do bloco (MUX/ sinais) e relaciono à alternativa correta.
+
+--------------------------------------------------------------------------
+Q1) Em VHDL, qual é a sequência de símbolos utilizada para o comando de
+    atribuição de sinal?
+    a) ==
+    b) <=
+    c) !=
+    d) --
+    e) ++
+
+Resposta: b) <=
+
+Justificativa:
+- Em VHDL, a atribuição a SINAIS usa o operador de **signal assignment**: <=
+  (ex.: A <= '1';). O operador := é para VARIÁVEIS (dentro de processos).
+- "==" e "!=" não são operadores do VHDL padrão (usa-se '=' e '/=');
+  "--" indica comentário; "++" não existe em VHDL.
+
+
+--------------------------------------------------------------------------
+Q2) Onde as entradas e as saídas de um circuito em VHDL são definidas
+    (declaradas)?
+    a) signal
+    b) clock
+    c) entity
+    d) architecture
+    e) behavior
+
+Resposta: c) entity
+
+Justificativa:
+- As portas (entradas/saídas) são declaradas na cláusula PORT da **entity**,
+  que descreve a interface do componente. A **architecture** descreve a
+  implementação interna. A palavra-chave **signal** declara sinais INTERNOS,
+  não portas.
+
+
+--------------------------------------------------------------------------
+Q3) É uma atribuição válida em VHDL:
+    a) A <= "1";
+    b) A <= '0001';
+    c) A <= '1';
+    d) A <= 1;
+    e) A <= "0";
+
+Resposta: c) A <= '1';
+
+Justificativa rápida por alternativa:
+- '1' é literal do tipo std_logic (aspas simples) → válido se A : std_logic.
+- "1" e "0" são vetores (std_logic_vector) → só seriam válidos se A fosse vetor
+  de 1 bit. '0001' é inválido (aspas simples só para um único caractere/bit).
+- 1 (sem aspas) não é literal de std_logic/std_logic_vector.
+
+
+--------------------------------------------------------------------------
+Q4) (Conforme Figura 1) Para qual instrução a unidade de controle deve setar
+    o multiplexador 18 em 1?
+    a) sub
+    b) beq
+    c) j
+    d) lw
+    e) sw
+
+Resposta: a) sub
+
+Justificativa técnica (mapeamento clássico no MIPS):
+- O “MUX 18” na figura costuma representar o **RegDst** (seleção do registrador
+  de destino no banco de registradores): 0 → **rt** (tipo I), 1 → **rd** (tipo R).
+- A instrução **sub** é do **formato R** e escreve no registrador **rd**;
+  portanto, **RegDst = 1**. As demais:
+  • beq e j não escrevem registrador (não têm destino no banco).
+  • lw é tipo I (destino em rt) → RegDst = 0; sw não escreve registrador.
+
+
+--------------------------------------------------------------------------
+(Figura 2) MUX controlado por ALUSrcB — papel e codificação
+-----------------------------------------------------------
+A figura destaca o MUX de entrada 'B' da ALU (multiciclo MIPS). O controle **ALUSrcB**
+tem 2 bits; o codificador clássico é:
+  ALUSrcB=00 → seleciona o registrador B (rt)         → usado em tipo R, beq
+  ALUSrcB=01 → constante 4                             → usado em IF (PC + 4)
+  ALUSrcB=10 → imediato estendido (sign-extend)        → lw/sw (cálculo de endereço)
+  ALUSrcB=11 → imediato estendido << 2 (branch offset) → cálculo de alvo de desvio
+Esse MUX permite que a mesma ALU realize tanto operações aritméticas quanto endereçamento
+de memória e cálculo de alvo de desvio, mudando apenas o seletor.
+
+
+--------------------------------------------------------------------------
+Q8) Hazard de controle (desvio) em pipeline MIPS — técnica empregada
+    para solucionar o risco de desvio:
+    a) multiciclo
+    b) ciclo único
+    c) hazard de dados (data hazard)
+    d) decisão adiada (delayed branch)
+    e) espera ocupada (busy waiting)
+
+Resposta: d) decisão adiada (delayed branch)
+
+Justificativa:
+- No MIPS clássico, adota-se o **branch delay slot**: a instrução imediatamente
+  após o branch **sempre executa**, independentemente de o desvio ser tomado.
+  Isso reduz o custo do risco de controle pois evita o descarte de bolhas/flush
+  na maioria dos casos.
+- (a) e (b) não são técnicas de pipeline; (c) é outro tipo de hazard; (e)
+  não resolve risco de controle.
+
+
+--------------------------------------------------------------------------
+APÊNDICE A — Regras úteis de VHDL (resumo)
+------------------------------------------
+1) Sinais vs Variáveis:
+   - **Sinal**: atribuição com '<='; escopo global/arquitetura; atualização
+     efetiva no fim do delta cycle (semântica de eventos).
+   - **Variável**: atribuição com ':='; escopo de processo; atualização imediata.
+
+2) Literais:
+   - **std_logic**: '0', '1', 'Z', 'U', etc. (aspas simples)
+   - **std_logic_vector**: "0001", "1010" (aspas duplas)
+
+3) Comparações:
+   - Igualdade/Desigualdade: '=' e '/=' (não '==' ou '!=')
+
+4) Sensibilização síncrona:
+   - `if rising_edge(clk) then ... end if;` para flip-flops.
+   - Enable típico: `if rising_edge(clk) then if en='1' then ... end if; end if;`
+
+
+--------------------------------------------------------------------------
+APÊNDICE B — Dicas rápidas (MIPS multiciclo)
+---------------------------------------------
+- RegDst=1 → destino 'rd' (formato R). RegDst=0 → destino 'rt' (tipo I).
+- MemtoReg=1 → WB recebe dado da memória (lw); MemtoReg=0 → resultado da ALU.
+- ALUSrcA: 0 → PC; 1 → registrador A (rs).
+- ALUSrcB: 00 → B (rt); 01 → 4; 10 → sign-extend(imm); 11 → sign-extend(imm)<<2.
+- BEQ usa subtração (ALUOp/ALUControl para SUB) e sinal Zero para PCWriteCond.
+- LW: endereço = rs + sign-extend(imm) → MEM read → WB em rt.
+- SW: endereço = rs + sign-extend(imm) → MEM write (sem WB).
+
+
+FIM DO ARQUIVO

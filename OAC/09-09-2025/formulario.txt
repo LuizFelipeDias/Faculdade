@@ -1,0 +1,176 @@
+RESOLUÇÕES DETALHADAS — MIPS (Ciclo Único e Multiciclo) & VHDL
+================================================================
+
+ÍNDICE
+------
+Q1) CPI médio (projeto MIPS multiciclo) .................................. [1]
+Q2) Comparação de desempenho: multiciclo × ciclo único ................... [2]
+Q3) Controle no MIPS de ciclo único (o que é e por que) .................. [3]
+Q4) Nº de ciclos para um trecho de código no MIPS multiciclo ............. [4]
+Q5) VHDL — correção de sintaxe na atribuição condicional ................. [5]
+Q6) VHDL — escrita síncrona com rising_edge e enable ..................... [6]
+Q7) Multiciclo — sinais nos ciclos 3 e 4 (R, BEQ, LW, SW) ...............  [7]
+
+
+[1] Q1) CPI MÉDIO DO PROJETO MIPS MULTICICLO
+--------------------------------------------
+Mix de instruções (frações do total):
+- loads (lw)   = 10% = 0,10 → 5 ciclos
+- stores (sw)  = 10% = 0,10 → 4 ciclos
+- branches     =  5% = 0,05 → 3 ciclos
+- jumps        =  5% = 0,05 → 3 ciclos
+- ALU (tipo R) = 70% = 0,70 → 4 ciclos
+
+Fórmula (média ponderada):
+    CPI = Σ (fração_i × ciclos_i)
+Cálculo passo a passo:
+    CPI = (0,10 × 5) + (0,10 × 4) + (0,05 × 3) + (0,05 × 3) + (0,70 × 4)
+        = 0,50 + 0,40 + 0,15 + 0,15 + 2,80
+        = 4,00 ciclos/instrução.
+
+Interpretação:
+- Em média, cada instrução consome 4 ciclos de clock no projeto multiciclo para o mix informado.
+- A distribuição do mix é crucial: mais ‘lw’ (5c) aumenta o CPI; mais ‘ALU’ (4c) o mantém em 4; mais branches (3c) tenderiam a reduzir o CPI.
+
+
+[2] Q2) COMPARAÇÃO: MULTICICLO × CICLO ÚNICO
+--------------------------------------------
+Dados:
+- CPI_multiciclo = 4,0 (de [1]); Tciclo_multiciclo = 200 ps.
+- CPI_ciclo_único = 1,0; Tciclo_ciclo_único = 1000 ps.
+
+Tempo por instrução (TPI) = CPI × Tciclo:
+- Multiciclo: TPI_m = 4,0 × 200 ps = 800 ps/instrução.
+- Ciclo único: TPI_s = 1,0 × 1000 ps = 1000 ps/instrução.
+
+Quem é mais rápido?
+- Menor TPI = mais rápido ⇒ multiciclo vence.
+
+Quanto é mais rápido? (Speedup):
+    speedup = TPI_s / TPI_m = 1000 / 800 = 1,25×
+⇒ O multiciclo é aproximadamente 25% mais rápido (economia de 200 ps por instrução).
+Observação: o ciclo único precisa de um clock longo o suficiente para cobrir o pior caminho (tipicamente lw), por isso 1000 ps.
+
+
+[3] Q3) CONTROLE NO MIPS DE CICLO ÚNICO
+---------------------------------------
+Resposta correta: **um circuito combinacional** (não é máquina de estados).
+
+Por quê?
+- No **ciclo único**, **toda** a instrução é executada em um único pulso de clock. Portanto, não há sequência de fases
+  (IF, ID, EX, MEM, WB) distribuídas ao longo de múltiplos ciclos.
+- As **saídas de controle** (RegDst, ALUSrc, MemtoReg, RegWrite, MemRead, MemWrite, Branch, Jump, ALUOp, etc.) são obtidas
+  **diretamente** do decodificador do campo **opcode** (e do **funct** para tipo R) por **lógica combinacional**.
+- Não há necessidade de armazenar “estado” (como S0, S1, S2…), característica típica de **máquinas de estados**.
+- Em contraste, o **multiciclo** usa FSM para avançar entre estados: IF → ID → {EX_R, EX_Mem, EX_Branch, EX_Jump} → MEM/WB.
+
+
+[4] Q4) Nº DE CICLOS PARA O CÓDIGO NO MIPS MULTICICLO
+-----------------------------------------------------
+Trecho:
+1) lw  $t1, 0($t0)   → 5 ciclos
+2) lw  $t2, 4($t0)   → 5 ciclos
+3) add $t3, $t1, $t2 → 4 ciclos
+4) sw  $t3, 12($t0)  → 4 ciclos
+5) lw  $t4, 8($t0)   → 5 ciclos
+6) add $t5, $t1, $t4 → 4 ciclos
+
+Total = 5 + 5 + 4 + 4 + 5 + 4 = **27 ciclos**.
+
+Visão por microfases (multiciclo típico):
+- IF  (S0): busca de instrução; PC <- PC + 4.
+- ID  (S1): decodificação + leitura de registradores; cálculo PC+imediato<<2 (pré-branch).
+- EX  (S2…): 
+    • R-format: ULA opera (rs op rt).
+    • lw/sw: cálculo do endereço = rs + signExt(imediato).
+    • beq: subtração (rs - rt) e verificação de zero para decidir branch.
+- MEM (S3): acesso à memória (lw: read; sw: write).
+- WB  (S4): write-back em registrador (lw: dado da memória; R: resultado da ULA).
+
+Aplicando:
+- lw: IF → ID → EX(addr) → MEM(read) → WB → 5 ciclos.
+- sw: IF → ID → EX(addr) → MEM(write) → (sem WB) → 4 ciclos.
+- add: IF → ID → EX(ALU) → WB → 4 ciclos.
+
+
+[5] Q5) VHDL — CORREÇÃO DE SINTAXE NA ATRIBUIÇÃO CONDICIONAL
+------------------------------------------------------------
+Linha correta:
+    R_type <= '1' when OPcode = "000000" else '0';
+
+Justificativas:
+1) **Comparação binária** com vetor exige **aspas duplas** (std_logic_vector): "000000".
+2) **Atribuição a sinais** usa **<=** (não :=, reservado a variáveis de processo).
+3) Os literais **'1'** e **'0'** têm tipo **std_logic** (aspas simples).
+
+Observações úteis:
+- Tipagem implícita deve ser coerente: R_type : std_logic; OPcode : std_logic_vector(5 downto 0).
+- Alternativa equivalente com “with … select”:
+      with OPcode select
+          R_type <= '1' when "000000",
+                    '0' when others;  -- garante cobertura completa
+
+
+[6] Q6) VHDL — ESCRITA SÍNCRONA COM RISING_EDGE E ENABLE
+--------------------------------------------------------
+Trecho:
+    if rising_edge(clk) and escReg = '1' then
+        mem(to_integer(unsigned(wa))) <= wd;
+    end if;
+
+Leitura técnica:
+- **rising_edge(clk)**: verdadeiro **somente** na transição **0 → 1** do clock.
+- **escReg = '1'**: sinal de **enable**; sem ele, não há escrita.
+- Atribuição ocorre **síncrona** à borda de SUBIDA do clock e **condicionada** ao enable.
+
+Tabela verdade (evento de escrita):
++-----------+--------+----------------------+
+| clk edge  | escReg | Escreve em mem?      |
++-----------+--------+----------------------+
+| subida    |   1    | SIM                  |
+| subida    |   0    | NÃO                  |
+| descida   |   0/1  | NÃO (rising_edge=0) |
++-----------+--------+----------------------+
+
+Boas práticas:
+- Use **rising_edge(clk)** (ou falling_edge) para flip-flops.
+- Mantenha enable separado: `if rising_edge(clk) then if escReg='1' then ... end if; end if;` (mesmo efeito, mais claro).
+- Converta índices de endereço corretamente: `to_integer(unsigned(wa))`.
+
+
+[7] Q7) MULTICICLO — SINAIS NOS CICLOS 3 E 4 (R, BEQ, LW, SW)
+-------------------------------------------------------------
+Convenções (ALU e fontes):
+- **OpALU (2 bits)**: 00 = soma; 01 = subtração; 10 = definido pelo campo FUNCT (formato R).
+- **ALUSrcA**: 0 = PC; 1 = registrador A (conteúdo de rs).
+- **ALUSrcB (2 bits)**: 00 = registrador B (rt); 01 = constante 4; 10 = imediato estendido (sign-extend); 11 = imediato<<2.
+
+Convênio para o **ciclo 4** nesta tabela: mostrar **MemRead**, **RegWrite**, **RegDst** (outros sinais como MemWrite,
+MemtoReg, IorD, PCWrite, etc., existem mas não foram solicitados).
+
+Tabela de preenchimento:
++------------+--------+---------+---------+---------+----------+--------+
+| Instrução  | OpALU  | ALUSrcA | ALUSrcB | MemRead | RegWrite | RegDst |
++------------+--------+---------+---------+---------+----------+--------+
+| R-format   |   10   |    1    |   00    |    0    |    1     |   1    |
+| beq        |   01   |    1    |   00    |    0    |    0     |   0    |
+| lw         |   00   |    1    |   10    |    1    |    0     |   0    |
+| sw         |   00   |    1    |   10    |    0    |    0     |   0    |
++------------+--------+---------+---------+---------+----------+--------+
+
+Justificativas, por caso:
+- **R-format** (3º ciclo = EX): ULA opera com rs e rt → ALUSrcA=1, ALUSrcB=00; operação definida por FUNCT → OpALU=10.
+  (4º ciclo = WB): grava em registrador **rd** → RegWrite=1 e RegDst=1 (seleciona rd). Sem acesso à memória → MemRead=0.
+- **beq** (3º ciclo = EX/Branch): compara rs e rt **via subtração** → OpALU=01, fontes registradores (1, 00). Não há WB,
+  nem leitura de memória no 4º ciclo → MemRead=0, RegWrite=0, RegDst=0.
+- **lw** (3º ciclo = EX/Addr): endereço = rs + signExt(imm) → OpALU=00, ALUSrcA=1, ALUSrcB=10.
+  (4º ciclo = MEM): leitura de memória → MemRead=1; WB só ocorre no 5º ciclo (não entra na tabela).
+- **sw** (3º ciclo = EX/Addr): igual ao lw para o cálculo do endereço. (4º ciclo = MEM): **escrita** na memória (sinal seria
+  MemWrite=1, não listado); não há write-back → RegWrite=0; MemRead=0.
+
+Notas finais:
+- Em beq, além do cálculo rs-rt, a FSM tipicamente usa `PCWriteCond` e `Zero` para decidir PC ← PCBranch.
+- Em lw, a seleção do dado para o WB é feita por `MemtoReg=1` (no 5º ciclo), e o destino é `rt` (RegDst=0).
+
+
+FIM — Documento detalhado
