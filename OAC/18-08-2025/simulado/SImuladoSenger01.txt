@@ -19,23 +19,7 @@ b) lw
 c) sw
 d) addi
 
-Resposta: c) sw
-
-Explicação:
-
-a) beq:
-Instrução de desvio, não envolve escrever dado na memória, portanto multiplexador 16 não deve ser 1.
-
-b) lw:
-Carrega dado da memória para o registrador, não escreve na memória, então multiplexador 16 deve estar em 0 para passar o dado da memória para registrador.
-
-d) addi:
-Instrução aritmética imediata que escreve em um registrador, não escreve na memória, multiplexador 16 deve estar em 0.
-
-c) sw:
-Instrui a escrita do dado do registrador na memória. Por isso multiplexador 16 deve ser 1 para escolher dados corretos para a memória.
-
-Na instrução sw (store word), o dado será salvo na memória. O multiplexador 16 precisa estar em 1 para selecionar o dado correto (que vem do registrador rt) para ser escrito na memória.
+Resposta: c) lw
 
 3. Para qual das seguintes instruções a linha 14 do caminho de dados é efetivamente empregada?
 a) add
